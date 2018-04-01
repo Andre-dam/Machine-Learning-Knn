@@ -4,6 +4,7 @@ from vdm_uw_knn import calculateNeighborsUnWeightenedVDM
 from vdm_w_knn import calculateNeighborsWeightenedVDM
 import misc
 import numpy as np
+
 def main():
     k = 5
     trainingSet=[]
@@ -25,7 +26,7 @@ def main():
         predictions.append(result)
         print('> predicted=' + repr(result) +', actual=' + repr(dataset[x][-1]))
     accuracy = misc.calculateAccuracy(testSet,predictions)
-    print('Unweightened knn Accuracy: ' + repr(accuracy) + '%')
+    print('Unweightened knn with euclidean Accuracy: ' + repr(accuracy) + '%')
     print
     #end-gambiarra antes do kfold
 
@@ -44,7 +45,7 @@ def main():
         predictions.append(result)
         print('> predicted=' + repr(result) +', actual=' + repr(dataset[x][-1]))
     accuracy = misc.calculateAccuracy(testSet,predictions)
-    print('Weightened knn Accuracy: ' + repr(accuracy) + '%')
+    print('Weightened knn with euclidean Accuracy: ' + repr(accuracy) + '%')
     print
 #Test vdm unweightened knn
     dataset = misc.loadData('chess.csv')
@@ -64,7 +65,7 @@ def main():
         predictions.append(result)
         print('> predicted=' + repr(result) +', actual=' + repr(testSet[x][-1]))
     accuracy = misc.calculateAccuracy(testSet,predictions)
-    print('Unweightened knn with vdm Accuracy: ' + repr(accuracy) + '%')
+    print('Unweightened knn with VDM Accuracy: ' + repr(accuracy) + '%')
     print
 
 #Test vdm weightened knn
@@ -85,22 +86,7 @@ def main():
         predictions.append(result)
         print('> predicted=' + repr(result) +', actual=' + repr(testSet[x][-1]))
     accuracy = misc.calculateAccuracy(testSet,predictions)
-    print('Weightened knn with vdm Accuracy: ' + repr(accuracy) + '%')
+    print('Weightened knn with VDM Accuracy: ' + repr(accuracy) + '%')
     print
-    
-"""     lookup_ = buildLookUp(dataset[range(50,len(dataset)-1)])
-    classes = getClasses(dataset[range(50,len(dataset)-1)])
-
-    predictions = []
-    for x in range(0,50):
-        #trainingSet, testInstance, k, lookup_table,classes        
-        neighbors = calculateNeighborsVDM(dataset[range(50,len(dataset)-1)],dataset[x],k,lookup_,classes)
-        #neighbors = calculateNeighbors(trainingSet,testSet[x],k)
-        result = responseUnWeightened(neighbors)
-        predictions.append(result)
-        print('> predicted=' + repr(result) +', actual=' + repr(dataset[x][-1]))
-    accuracy = calculateAccuracy(dataset[range(0,50),:],predictions)
-    print('Accuracy: ' + repr(accuracy) + '%')
- """
 
 main()
