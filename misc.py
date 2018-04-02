@@ -34,13 +34,14 @@ def normalizeData(dataset):
 
 def getClasses(dataset):
     classes = dict.fromkeys(dataset[:,-1])
+    
     return classes
 
 def buildLookUp(dataset):
     lookup_table = dict.fromkeys(range(0,len(dataset[0])-1))
     for i in range(0,len(dataset[0])-1):
         lookup_table[i] = {}
-        soma = 0
+ 
         for j in range (len(dataset)):
             if lookup_table[i].has_key(dataset[j][i]) == True:
                 if lookup_table[i][dataset[j][i]].has_key(dataset[j][-1]) == True:
@@ -51,11 +52,13 @@ def buildLookUp(dataset):
                 lookup_table[i][dataset[j][i]] = {}
                 lookup_table[i][dataset[j][i]][dataset[j][-1]] = 1
 
-    for i in range(0,len(dataset[0])-1):
+    soma = 0
+    #for i in range(0,len(dataset[0])-1):
+    for i in lookup_table:
             for j in lookup_table[i]:
                 soma = sum(lookup_table[i][j].values())
                 for k in lookup_table[i][j]:
-                    lookup_table[i][j][k] = lookup_table[i][j][k] / soma 
+                    lookup_table[i][j][k] = lookup_table[i][j][k] / float(soma) 
     return lookup_table
 
 def calculateAccuracy(testSet, predictions):
