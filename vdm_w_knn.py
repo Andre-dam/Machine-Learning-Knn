@@ -15,7 +15,7 @@ def calculateNeighborsWeightenedVDM(trainingSet, testInstance, k, lookup_table,c
     neighbors = []
     for x in range(k):
         neighbors.append(distances[x])
-    return responseUnWeightened(neighbors)
+    return responseWeightened(neighbors)
 
 def VDM(instance1,instance2,lookup_table,classes):
     summation = 0
