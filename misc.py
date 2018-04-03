@@ -6,12 +6,23 @@ def loadData(filename):
         data = arff.loadarff(filename)
         dataset = pd.DataFrame(data[0]).values                
         normalizeData(dataset)
-    elif '.csv' in filename:
+    elif '.csv' in filename or '.data' in filename:
         df=pd.read_csv(filename, sep=',',header=None)
         dataset = df.values
         normalizeData(dataset)      
     else:        
         print "Unknown format!!error"
+    return dataset
+def reverseInput(dataset):
+    for i in range(len(dataset)):
+        for j in range(3,len(dataset[i])):
+            if(dataset[i][j] != "XXXXXXX"):
+                dataset[i][j] = float(dataset[i][j])
+            else:
+                dataset[i][j] = float(nan)
+
+    for i in range(len(dataset)):
+        dataset[i] = dataset[i][::-1]
     return dataset
 
 def normalizeData(dataset):
@@ -41,16 +52,18 @@ def buildLookUp(dataset):
     lookup_table = dict.fromkeys(range(0,len(dataset[0])-1))
     for i in range(0,len(dataset[0])-1):
         lookup_table[i] = {}
- 
+
         for j in range (len(dataset)):
             if lookup_table[i].has_key(dataset[j][i]) == True:
-                if lookup_table[i][dataset[j][i]].has_key(dataset[j][-1]) == True:
-                    lookup_table[i][dataset[j][i]][dataset[j][-1]] += 1
-                else:
-                    lookup_table[i][dataset[j][i]][dataset[j][-1]] = 1
+                if isinstance(dataset[j][i],float) != True:
+                    if lookup_table[i][dataset[j][i]].has_key(dataset[j][-1]) == True:
+                        lookup_table[i][dataset[j][i]][dataset[j][-1]] += 1
+                    else:
+                        lookup_table[i][dataset[j][i]][dataset[j][-1]] = 1
             else:
-                lookup_table[i][dataset[j][i]] = {}
-                lookup_table[i][dataset[j][i]][dataset[j][-1]] = 1
+                if isinstance(dataset[j][i],float) != True:
+                    lookup_table[i][dataset[j][i]] = {}
+                    lookup_table[i][dataset[j][i]][dataset[j][-1]] = 1
 
     soma = 0
     #for i in range(0,len(dataset[0])-1):
