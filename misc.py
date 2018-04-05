@@ -2,6 +2,7 @@ import pandas as pd
 from scipy.io import arff
 
 def loadData(filename):
+    print "Using dataset: "+filename
     if '.arff' in filename:
         data = arff.loadarff(filename)
         dataset = pd.DataFrame(data[0]).values                
@@ -12,6 +13,7 @@ def loadData(filename):
         normalizeData(dataset)      
     else:        
         print "Unknown format!!error"
+
     return dataset
 def reverseInput(dataset):
     for i in range(len(dataset)):
@@ -41,6 +43,29 @@ def normalizeData(dataset):
         for y in range(len(dataset[x])-1):
             if isinstance(dataset[x][y],float) == True:
                 dataset[x][y] = (dataset[x][y])/ (max[y]-min[y])
+
+def maxMin(dataset):
+    max = list(dataset[0])
+    min = list(dataset[0])
+
+    for x in range(len(dataset)):
+        for y in range(len(dataset[x])-1):
+            if isinstance(dataset[x][y],float) == True:
+                if dataset[x][y] > max[y]:
+                    max[y] = dataset[x][y]
+                if dataset[x][y] < min[y]:
+                    min[y] = dataset[x][y]
+    sub = []
+    for i in range(len(max)):
+        if isinstance(max[i],float) == True:
+            sub.append(max[i] - min[i])
+        else:
+            sub.append("?")
+
+    return sub
+
+
+    
 
 
 def getClasses(dataset):

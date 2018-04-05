@@ -1,13 +1,13 @@
 import math
 import operator
 
-def calculateNeighborsUnWeightenedHVDM(trainingSet, testInstance, k, lookup_table,classes):
+def calculateNeighborsUnWeightenedHVDM(trainingSet, testInstance, k, lookup_table,classes,maxmin):
     
     distances = []
     length = len(testInstance) - 1
     
     for x in range(len(trainingSet)):        
-        dist = VDM(trainingSet[x],testInstance,lookup_table,classes)
+        dist = VDM(trainingSet[x],testInstance,lookup_table,classes,maxmin)
         distances.append((trainingSet[x],dist))
     distances.sort(key=operator.itemgetter(1))
     neighbors = []
@@ -15,29 +15,18 @@ def calculateNeighborsUnWeightenedHVDM(trainingSet, testInstance, k, lookup_tabl
         neighbors.append(distances[x])
     return responseUnWeightened(neighbors)
 
-def VDM(instance1,instance2,lookup_table,classes):
+def VDM(instance1,instance2,lookup_table,classes,maxmin):
     summation = 0
     for j in range(len(instance1)-1):
-        if instance1[j] != instance1[j] == True and instance2[j] != instance2[j] == True:
+        if instance1[j] == '?' and instance2[j] == '?':
             summation += 0 
-        elif instance1[j] != instance1[j] == True or instance2[j] != instance2[j] == True:
+        elif instance1[j] == '?' or instance2[j] == '?':
             summation += 1        
         elif isinstance(instance1[j],float) == True:
-            summation += abs(instance1[j]-instance2[j])
+            summation += abs(instance1[j]-instance2[j])/maxmin[j]
         else:
             summation += vdm_i(instance1[j],instance2[j],lookup_table[j],classes)
     return math.sqrt(summation)
-
-"""     for j in range(len(instance1)-1):
-        if math.isnan(instance1[j]) == True and math.isnan(instance2[j]) == True:
-            summation += 0 
-        elif math.isnan(instance1[j]) == True or math.isnan(instance2[j]) == True:
-            summation += 1        
-        elif isinstance(instance1[j],float) == True:
-            summation += vdm_i(instance1[j],instance2[j],lookup_table[j],classes)
-        else:
-            summation += abs(instance1[j]-instance2[j])
-    return math.sqrt(summation) """
 
 def vdm_i(instance1_i,instance2_i,lookup_table,classes):
     summation = 0
